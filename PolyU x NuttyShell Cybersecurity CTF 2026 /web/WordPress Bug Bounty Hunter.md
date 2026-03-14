@@ -2,10 +2,10 @@
 
 ## Challenge Overview
 
-**Category:** Web  
-**Difficulty:** Medium/Hard  
-**Platform:** PolyU CTF  
-**Challenge URL:** http://chal.polyuctf.com:42790
+- **Category:** Web  
+- **Difficulty:** Medium/Hard  
+- **Platform:** PolyU CTF  
+- **Challenge URL:** http://chal.polyuctf.com:42790
 
 The challenge involved finding a 0-day vulnerability in a custom WordPress plugin called "Temporary Login". The plugin was designed to create temporary, passwordless user access with a single click.
 

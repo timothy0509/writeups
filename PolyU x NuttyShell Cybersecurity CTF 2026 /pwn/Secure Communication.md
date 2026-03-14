@@ -1,5 +1,12 @@
 # Secure Communication - Writeup
 
+## Challenge Info
+
+- **Challenge Name:** Secure Communication
+- **Category**: pwn
+- **Flag Format**: PUCTF26{[A-Z0-9_]+_[A-F0-9]{32}}
+- **File**: chal.tar.gz
+
 ## Challenge Summary
 
 The service is a line-oriented encrypted protocol wrapped around a small Bun application.

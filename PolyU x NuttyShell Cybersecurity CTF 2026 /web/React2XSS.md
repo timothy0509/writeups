@@ -2,13 +2,10 @@
 
 ## Challenge Overview
 
-**Challenge:** React2XSS  
-
-**Category:** Web (XSS)  
-
-**Connection:** http://chal.polyuctf.com:46564 (This is the port number I will reference throughout the writeup, this can be replaced with the actual port)
-
-**Description:** "I vibe coded a Next.js application. Hopefully it doesn't have any vulnerabilities"
+- **Challenge:** React2XSS  
+- **Category:** Web (XSS)  
+- **Connection:** http://chal.polyuctf.com:46564 (This is the port number I will reference throughout the writeup, this can be replaced with the actual port)
+- **Description:** "I vibe coded a Next.js application. Hopefully it doesn't have any vulnerabilities"
 
 ---
 

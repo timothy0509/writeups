@@ -2,9 +2,9 @@
 
 ## Challenge Overview
 
-**Challenge Name:** Secure Communication (Advanced)
-**Target:** `chal.polyuctf.com:35251` (This is the port number I will reference throughout the writeup, this can be replaced with the actual port) 
-**Category:** Binary Exploitation
+- **Challenge Name:** Secure Communication (Advanced)
+- **Target:** `chal.polyuctf.com:35251` (This is the port number I will reference throughout the writeup, this can be replaced with the actual port) 
+- **Category:** Binary Exploitation
 
 This challenge presented a custom TCP-based protocol using RSA-OAEP encryption and Bun serialization. The service featured multiple command handlers including authentication, file upload, and an update mechanism.
 

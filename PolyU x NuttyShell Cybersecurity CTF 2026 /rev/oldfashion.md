@@ -2,10 +2,10 @@
 
 ## Challenge Overview
 
-**Challenge Name:** oldfashion  
-**Category:** Reverse Engineering  
-**File:** `oldfashion` (64-bit stripped PIE ELF)  
-**Description:** "Something is hidden in this game, can you find it?"
+- **Challenge Name:** oldfashion  
+- **Category:** Reverse Engineering  
+- **File:** `oldfashion` (64-bit stripped PIE ELF)  
+- **Description:** "Something is hidden in this game, can you find it?"
 
 The challenge presents a stripped 64-bit PIE ELF binary that appears to be a game. The goal is to find the hidden flag by reverse engineering the binary and understanding its internal flag construction mechanism.
 
