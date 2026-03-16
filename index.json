@@ -55,92 +55,92 @@
     },
     {
       "slug": [
-        "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+        "PolyU x NuttyShell Cybersecurity CTF 2026",
         "misc",
         "私칸字本当上手"
       ],
-      "event": "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+      "event": "PolyU x NuttyShell Cybersecurity CTF 2026",
       "category": "misc",
       "title": "私칸字本当上手",
-      "path": "PolyU x NuttyShell Cybersecurity CTF 2026 /misc/私칸字本当上手.md",
+      "path": "PolyU x NuttyShell Cybersecurity CTF 2026/misc/私칸字本当上手.md",
       "createdAt": "2026-03-14T07:59:43Z",
       "lastModified": "2026-03-14T07:59:43Z"
     },
     {
       "slug": [
-        "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+        "PolyU x NuttyShell Cybersecurity CTF 2026",
         "pwn",
         "Secure Communication (Advanced)"
       ],
-      "event": "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+      "event": "PolyU x NuttyShell Cybersecurity CTF 2026",
       "category": "pwn",
       "title": "Secure Communication (Advanced)",
-      "path": "PolyU x NuttyShell Cybersecurity CTF 2026 /pwn/Secure Communication (Advanced).md",
+      "path": "PolyU x NuttyShell Cybersecurity CTF 2026/pwn/Secure Communication (Advanced).md",
       "createdAt": "2026-03-14T07:59:43Z",
       "lastModified": "2026-03-14T07:59:43Z"
     },
     {
       "slug": [
-        "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+        "PolyU x NuttyShell Cybersecurity CTF 2026",
         "pwn",
         "Secure Communication"
       ],
-      "event": "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+      "event": "PolyU x NuttyShell Cybersecurity CTF 2026",
       "category": "pwn",
       "title": "Secure Communication",
-      "path": "PolyU x NuttyShell Cybersecurity CTF 2026 /pwn/Secure Communication.md",
+      "path": "PolyU x NuttyShell Cybersecurity CTF 2026/pwn/Secure Communication.md",
       "createdAt": "2026-03-14T07:59:43Z",
       "lastModified": "2026-03-14T07:59:43Z"
     },
     {
       "slug": [
-        "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+        "PolyU x NuttyShell Cybersecurity CTF 2026",
         "rev",
         "oldfashion"
       ],
-      "event": "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+      "event": "PolyU x NuttyShell Cybersecurity CTF 2026",
       "category": "rev",
       "title": "oldfashion",
-      "path": "PolyU x NuttyShell Cybersecurity CTF 2026 /rev/oldfashion.md",
+      "path": "PolyU x NuttyShell Cybersecurity CTF 2026/rev/oldfashion.md",
       "createdAt": "2026-03-14T07:59:43Z",
       "lastModified": "2026-03-14T07:59:43Z"
     },
     {
       "slug": [
-        "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+        "PolyU x NuttyShell Cybersecurity CTF 2026",
         "web",
         "React2XSS"
       ],
-      "event": "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+      "event": "PolyU x NuttyShell Cybersecurity CTF 2026",
       "category": "web",
       "title": "React2XSS",
-      "path": "PolyU x NuttyShell Cybersecurity CTF 2026 /web/React2XSS.md",
+      "path": "PolyU x NuttyShell Cybersecurity CTF 2026/web/React2XSS.md",
       "createdAt": "2026-03-14T07:59:43Z",
       "lastModified": "2026-03-14T07:59:43Z"
     },
     {
       "slug": [
-        "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+        "PolyU x NuttyShell Cybersecurity CTF 2026",
         "web",
         "WordPress Bug Bounty Hunter"
       ],
-      "event": "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+      "event": "PolyU x NuttyShell Cybersecurity CTF 2026",
       "category": "web",
       "title": "WordPress Bug Bounty Hunter",
-      "path": "PolyU x NuttyShell Cybersecurity CTF 2026 /web/WordPress Bug Bounty Hunter.md",
+      "path": "PolyU x NuttyShell Cybersecurity CTF 2026/web/WordPress Bug Bounty Hunter.md",
       "createdAt": "2026-03-14T07:59:43Z",
       "lastModified": "2026-03-14T07:59:43Z"
     },
     {
       "slug": [
-        "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+        "PolyU x NuttyShell Cybersecurity CTF 2026",
         "rev",
         "Play with Dinosaur"
       ],
-      "event": "PolyU x NuttyShell Cybersecurity CTF 2026 ",
+      "event": "PolyU x NuttyShell Cybersecurity CTF 2026",
       "category": "rev",
       "title": "Play with Dinosaur",
-      "path": "PolyU x NuttyShell Cybersecurity CTF 2026 /rev/Play with Dinosaur.md",
+      "path": "PolyU x NuttyShell Cybersecurity CTF 2026/rev/Play with Dinosaur.md",
       "createdAt": "2026-03-14T06:52:04Z",
       "lastModified": "2026-03-14T06:52:04Z"
     }
