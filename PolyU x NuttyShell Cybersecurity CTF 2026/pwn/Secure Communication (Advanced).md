@@ -3,7 +3,7 @@
 ## Challenge Overview
 
 - **Challenge Name:** Secure Communication (Advanced)
-- **Target:** `chal.polyuctf.com:35251` (This is the port number I will reference throughout the writeup, this can be replaced with the actual port) 
+- **Target:** `chal.polyuctf.com:35251` (This is the port number I will reference throughout the writeup, this can be replaced with the actual port)
 - **Category:** Binary Exploitation
 
 This challenge presented a custom TCP-based protocol using RSA-OAEP encryption and Bun serialization. The service featured multiple command handlers including authentication, file upload, and an update mechanism.
@@ -226,9 +226,9 @@ PUCTF26{t8p_h77p_t0g5t2e9_3kh6xYNlHXC21hPHHt2R80pbJXKZBE6X}
 The `update` command spawns a child process with attacker-controlled environment:
 
 ```javascript
-Bun.spawnSync({ 
-  cmd: [process.execPath, 'update'], 
-  env: e.env || process.env 
+Bun.spawnSync({
+  cmd: [process.execPath, 'update'],
+  env: e.env || process.env
 })
 ```
 

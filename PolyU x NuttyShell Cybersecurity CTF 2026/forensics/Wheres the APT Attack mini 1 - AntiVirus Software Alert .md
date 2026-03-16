@@ -1,7 +1,7 @@
 # Challenge 18 (Part 1) - Incident Response / SOC Analysis Write-up
 
 ## Challenge Overview
-The challenge provides an Incident Response (IR) package hosted externally, protected by the password `infected`. The package contains a Windows memory image, event logs, and registry hives. 
+The challenge provides an Incident Response (IR) package hosted externally, protected by the password `infected`. The package contains a Windows memory image, event logs, and registry hives.
 
 **Objective:** Identify the following four pieces of information:
 1. The time when the antivirus software protection was disabled (`DisableTime`).
