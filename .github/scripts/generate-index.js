@@ -15,6 +15,16 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const API_BASE = 'api.github.com';
 
+const NICKNAME_MAP = {
+  'timothy0509': 'Timothy',
+  'DXinschool': 'DXuwu',
+  'SYJCsteve': 'steve'
+};
+
+function getNickname(username) {
+  return NICKNAME_MAP[username] || username;
+}
+
 /**
  * Make an authenticated HTTPS request to GitHub API
  */
@@ -105,8 +115,10 @@ async function fetchFileCommits(filePath) {
     });
 
     let lastModified = null;
+    let writer = null;
     if (firstPageResponse.data && firstPageResponse.data.length > 0) {
       lastModified = firstPageResponse.data[0].commit.committer.date;
+      writer = firstPageResponse.data[0].author?.login || null;
     }
 
     // Get total pages from Link header
@@ -128,13 +140,15 @@ async function fetchFileCommits(filePath) {
 
     return {
       createdAt,
-      lastModified: lastModified || createdAt
+      lastModified: lastModified || createdAt,
+      writer
     };
   } catch (error) {
     console.warn(`Warning: Failed to fetch commits for ${filePath}: ${error.message}`);
     return {
       createdAt: null,
-      lastModified: null
+      lastModified: null,
+      writer: null
     };
   }
 }
@@ -186,7 +200,8 @@ async function main() {
       console.log(`[${i + 1}/${files.length}] Processing: ${filePath}`);
 
       const { slug, event, category, title } = parsePath(filePath);
-      const { createdAt, lastModified } = await fetchFileCommits(filePath);
+      const { createdAt, lastModified, writer } = await fetchFileCommits(filePath);
+      const nickname = getNickname(writer);
 
       writeups.push({
         slug,
@@ -195,7 +210,9 @@ async function main() {
         title,
         path: filePath,
         createdAt,
-        lastModified
+        lastModified,
+        writer,
+        nickname
       });
     }
 
