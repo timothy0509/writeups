@@ -2,9 +2,9 @@
 
 ## Challenge Overview
 
-- **Challenge Name:** oldfashion  
-- **Category:** Reverse Engineering  
-- **File:** `oldfashion` (64-bit stripped PIE ELF)  
+- **Challenge Name:** oldfashion
+- **Category:** Reverse Engineering
+- **File:** `oldfashion` (64-bit stripped PIE ELF)
 - **Description:** "Something is hidden in this game, can you find it?"
 
 The challenge presents a stripped 64-bit PIE ELF binary that appears to be a game. The goal is to find the hidden flag by reverse engineering the binary and understanding its internal flag construction mechanism.
@@ -134,7 +134,7 @@ Following the execution from `0xbc77`:
 1. **Memory Allocation**: The code calls `calloc` to allocate working memory
 2. **Constant Tables**: It references several constant tables in `.rodata`:
    - `0x1905a0`: First transformation table
-   - `0x190620`: Second transformation table  
+   - `0x190620`: Second transformation table
    - `0x190720`: Third transformation table
    - `0x191b62`: Word-sized constants
 
@@ -186,13 +186,13 @@ $ gdb ./oldfashion
 (gdb) x/s $rsp+0x3405
 ```
 
-**Pros:** Direct, accurate  
+**Pros:** Direct, accurate
 **Cons:** The binary might have anti-debugging, requires interactive execution
 
 ### Option 2: Manual Algorithm Reversal
 Reverse engineer the exact algorithm and reimplement it.
 
-**Pros:** No runtime dependencies  
+**Pros:** No runtime dependencies
 **Cons:** Very time-consuming, error-prone due to complexity
 
 ### Option 3: Emulation (Chosen Approach)
@@ -259,18 +259,18 @@ def load_elf_segments(mu, path):
         for seg in elf.iter_segments():
             if seg['p_type'] != 'PT_LOAD':
                 continue
-                
+
             vaddr = seg['p_vaddr']
             memsz = seg['p_memsz']
             filesz = seg['p_filesz']
             offset = seg['p_offset']
             flags = seg['p_flags']
-            
+
             # Page-align addresses
             start = vaddr & ~0xfff
             end = (vaddr + memsz + 0xfff) & ~0xfff
             size = end - start
-            
+
             # Determine permissions
             perms = 0
             if flags & 4:  # PF_R (Read)
@@ -279,19 +279,19 @@ def load_elf_segments(mu, path):
                 perms |= UC_PROT_WRITE
             if flags & 1:  # PF_X (Execute)
                 perms |= UC_PROT_EXEC
-            
+
             # Map memory
             mu.mem_map(start, size, perms)
-            
+
             # Read file data
             f.seek(offset)
             data = f.read(filesz)
             mu.mem_write(vaddr, data)
-            
+
             # Zero-fill bss section
             if memsz > filesz:
                 mu.mem_write(vaddr + filesz, b'\x00' * (memsz - filesz))
-            
+
             print(f'[+] Mapped 0x{start:08x}-0x{end:08x} (perms: {perms})')
 
 # =============================================================================
@@ -303,30 +303,30 @@ heap_current = HEAP_BASE + 0x1000  # Current heap allocation pointer
 def hook_calloc(mu, addr, size, user_data):
     """
     Hook for calloc@plt (0x9670)
-    
+
     calloc(nmemb, size) allocates zeroed memory.
     We allocate from our emulated heap and return the pointer.
     """
     global heap_current
-    
+
     # Get return address from stack
     ret_addr = struct.unpack('<Q', mu.mem_read(mu.reg_read(UC_X86_REG_RSP), 8))[0]
-    
+
     # Get arguments
     nmemb = mu.reg_read(UC_X86_REG_RDI)
     sz = mu.reg_read(UC_X86_REG_RSI)
     total = nmemb * sz
-    
+
     # Allocate from heap (page-aligned)
     ptr = heap_current
     heap_current += ((total + 0xfff) & ~0xfff) or 0x1000
-    
+
     # Zero the memory (calloc behavior)
     mu.mem_write(ptr, b'\x00' * total)
-    
+
     # Return pointer in RAX
     mu.reg_write(UC_X86_REG_RAX, ptr)
-    
+
     # Pop return address and continue
     mu.reg_write(UC_X86_REG_RSP, mu.reg_read(UC_X86_REG_RSP) + 8)
     mu.reg_write(UC_X86_REG_RIP, ret_addr)
@@ -335,13 +335,13 @@ def hook_calloc(mu, addr, size, user_data):
 def hook_free(mu, addr, size, user_data):
     """
     Hook for free@plt (0x9370)
-    
+
     free(ptr) deallocates memory.
     For our purposes, we just skip it (no actual deallocation needed).
     """
     # Get return address
     ret_addr = struct.unpack('<Q', mu.mem_read(mu.reg_read(UC_X86_REG_RSP), 8))[0]
-    
+
     # Pop return address and continue
     mu.reg_write(UC_X86_REG_RSP, mu.reg_read(UC_X86_REG_RSP) + 8)
     mu.reg_write(UC_X86_REG_RIP, ret_addr)
@@ -350,31 +350,31 @@ def hook_free(mu, addr, size, user_data):
 def hook_memcpy_destination(mu, addr, size, user_data):
     """
     Hook called when execution reaches the final copy (0xcece).
-    
+
     At this point, the flag has been constructed at [rsp+0x3405].
     We read it and print it, then stop emulation.
     """
     # Get current stack pointer
     rsp = mu.reg_read(UC_X86_REG_RSP)
-    
+
     # The flag is at [rsp+0x3405]
     flag_addr = rsp + 0x3405
-    
+
     # Read up to 128 bytes (more than enough for the flag)
     flag_data = mu.mem_read(flag_addr, 0x80)
-    
+
     # Find null terminator
     null_pos = flag_data.find(b'\x00')
     if null_pos != -1:
         flag_data = flag_data[:null_pos]
-    
+
     # Print the flag
     print('\n' + '='*60)
     print('FLAG EXTRACTED SUCCESSFULLY!')
     print('='*60)
     print(flag_data.decode('utf-8', errors='replace'))
     print('='*60 + '\n')
-    
+
     # Stop emulation
     mu.emu_stop()
 
@@ -391,16 +391,16 @@ def hook_memory_invalid(mu, access, address, size, value, user_data):
         UC_MEM_READ_PROT: 'READ_PROT',
         UC_MEM_FETCH_PROT: 'FETCH_PROT',
     }.get(access, f'UNKNOWN({access})')
-    
+
     rip = mu.reg_read(UC_X86_REG_RIP)
     rsp = mu.reg_read(UC_X86_REG_RSP)
-    
+
     print(f'[!] Invalid memory access: {access_type}')
     print(f'    Address: 0x{address:08x}')
     print(f'    Size: {size}')
     print(f'    RIP: 0x{rip:08x}')
     print(f'    RSP: 0x{rsp:08x}')
-    
+
     return False  # Stop emulation
 
 # =============================================================================
@@ -412,15 +412,15 @@ def main():
     print('Oldfashion Flag Extractor')
     print('='*60)
     print()
-    
+
     # Initialize Unicorn emulator
     mu = Uc(UC_ARCH_X86, UC_MODE_64)
-    
+
     # Load ELF segments
     print('[*] Loading ELF segments...')
     load_elf_segments(mu, BINARY_PATH)
     print()
-    
+
     # Map stack memory
     print('[*] Mapping stack...')
     mu.mem_map(STACK_BASE, STACK_SIZE)
@@ -430,49 +430,49 @@ def main():
     print(f'    Stack: 0x{STACK_BASE:08x}-0x{STACK_BASE+STACK_SIZE:08x}')
     print(f'    RSP = 0x{rsp:08x}')
     print()
-    
+
     # Map heap memory
     print('[*] Mapping heap...')
     mu.mem_map(HEAP_BASE, HEAP_SIZE)
     print(f'    Heap: 0x{HEAP_BASE:08x}-0x{HEAP_BASE+HEAP_SIZE:08x}')
     print()
-    
+
     # Initialize other registers
-    for reg in [UC_X86_REG_RBP, UC_X86_REG_RBX, 
+    for reg in [UC_X86_REG_RBP, UC_X86_REG_RBX,
                 UC_X86_REG_R12, UC_X86_REG_R13, UC_X86_REG_R14]:
         mu.reg_write(reg, 0)
-    
+
     # Set up hooks
     print('[*] Setting up hooks...')
-    
+
     # Hook PLT entries
     mu.hook_add(UC_HOOK_CODE, hook_calloc, begin=0x9670, end=0x9674)
     mu.hook_add(UC_HOOK_CODE, hook_free, begin=0x9370, end=0x9374)
-    
+
     # Hook the flag capture point
     mu.hook_add(UC_HOOK_CODE, hook_memcpy_destination, begin=0xcece, end=0xced3)
-    
+
     # Hook invalid memory accesses for debugging
     mu.hook_add(UC_HOOK_MEM_INVALID, hook_memory_invalid)
-    
+
     print('    calloc@plt hooked at 0x9670')
     print('    free@plt hooked at 0x9370')
     print('    Flag capture at 0xcece')
     print()
-    
+
     # Run emulation
     print(f'[*] Starting emulation...')
     print(f'    Entry: 0x{START_ADDR:08x}')
     print(f'    Exit:  0x{END_ADDR:08x}')
     print()
-    
+
     try:
         mu.emu_start(START_ADDR, END_ADDR, count=5_000_000)
     except UcError as e:
         print(f'[!] Emulation error: {e}')
         rip = mu.reg_read(UC_X86_REG_RIP)
         print(f'    Stopped at RIP = 0x{rip:08x}')
-    
+
     print('[*] Emulation complete')
 
 if __name__ == '__main__':
@@ -629,7 +629,7 @@ PUCTF26{0ld_f4sh10n_1s_n0t_0ut_0f_5tyl3_59047b21c800906534b0860f973883b5}
 
 ## Conclusion
 
-This challenge required looking past the obvious decoy flag and identifying the real flag-building routine through careful static analysis. The flag is constructed dynamically at runtime through a complex series of byte-level operations between addresses `0xbc77` and `0xcece`, with the final result stored at `[rsp+0x3405]`. 
+This challenge required looking past the obvious decoy flag and identifying the real flag-building routine through careful static analysis. The flag is constructed dynamically at runtime through a complex series of byte-level operations between addresses `0xbc77` and `0xcece`, with the final result stored at `[rsp+0x3405]`.
 
 Using Unicorn emulation allowed us to execute just the flag-building code in isolation and extract the result without needing to:
 - Reverse the entire transformation algorithm manually

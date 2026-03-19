@@ -1,8 +1,8 @@
 # Challenge 14 Writeup
 
-**Challenge Name:** challenge14  
-**Author:** SalaryThief  
-**Category:** Reverse Engineering / Web  
+**Challenge Name:** challenge14
+**Author:** SalaryThief
+**Category:** Reverse Engineering / Web
 **Description:** "Last time, someone said my license activation program so easy to crack it. So, I enhanced it in this time."
 
 ## Initial Analysis

