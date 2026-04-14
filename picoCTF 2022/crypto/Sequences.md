@@ -2,9 +2,9 @@
 
 ## Challenge Overview
 
-- **Challenge Name:** Sequences  
-- **Category:** Cryptography / Programming  
-- **Difficulty:** Medium-Hard  
+- **Challenge Name:** Sequences
+- **Category:** Cryptography / Programming
+- **Difficulty:** Medium-Hard
 
 ### Description
 The challenge presents a linear recurrence function that needs to be optimized to run fast enough to retrieve the flag. The hint indicates that even an efficient solution might take several seconds, but if it's taking several minutes, a different approach is needed.
@@ -187,13 +187,13 @@ def mat_pow(A, p, mod):
     res = [[0] * 4 for _ in range(4)]
     for i in range(4):
         res[i][i] = 1
-    
+
     while p > 0:
         if p % 2 == 1:
             res = mat_mul(res, A, mod)
         A = mat_mul(A, A, mod)
         p //= 2
-    
+
     return res
 
 
@@ -214,13 +214,13 @@ def solve():
     else:
         # Compute M^(ITERS-3)
         M_pow = mat_pow(M, ITERS - 3, MOD)
-        
+
         # m(n) = first row of M^(n-3) dot product with [m(3), m(2), m(1), m(0)]
         # [m(3), m(2), m(1), m(0)] = [4, 3, 2, 1]
         sol = (
-            M_pow[0][0] * 4 + 
-            M_pow[0][1] * 3 + 
-            M_pow[0][2] * 2 + 
+            M_pow[0][0] * 4 +
+            M_pow[0][1] * 3 +
+            M_pow[0][2] * 2 +
             M_pow[0][3] * 1
         ) % MOD
 
